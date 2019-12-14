@@ -1,0 +1,11 @@
+{
+  "header": "骰寶計算器",
+  "inputTextFields": {
+    "base": "原始資金",
+    "iteration": "運行次數",
+    "purchaseLimit": "購買上限",
+    "startPurchaseAmount": "原始購買金額",
+    "target": "目標"
+  },
+  "calculateButton": "計算吧，機器"
+}

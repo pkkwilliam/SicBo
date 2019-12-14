@@ -1,0 +1,11 @@
+{
+  "header": "Sic Bo Calculator",
+  "inputTextFields": {
+    "base": "Base",
+    "iteration": "number of process",
+    "purchaseLimit": "Purcahse Limit",
+    "startPurchaseAmount": "Start Purchase Amount",
+    "target": "Target"
+  },
+  "calculateButton": "Calculate"
+}
