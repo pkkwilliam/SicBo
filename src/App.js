@@ -3,21 +3,23 @@ import { Button, TextField, InputAdornment } from "@material-ui/core";
 import chineseLabels from "./content/label.cn.json";
 import englishLabels from "./content/label.en.json";
 import "./App.css";
-import { DoubleDown } from "./content/doubleDown/doubleDownCalculate.js";
-import generate from "@babel/generator";
+import { DoubleDown } from "./doubleDown/doubleDownCalculate";
+import SicBoTable from "./table/table.js";
 
 export default class App extends React.Component {
   constructor(props) {
     super();
     this.state = {
       base: 3000,
-      iteration: 100,
+      iteration: 10,
       purchaseLimit: 20000,
       startPurchaseAmount: 200,
-      target: 32000,
+      target: 3200,
       labels: chineseLabels,
       hasResult: false,
-      result: []
+      result: [],
+      winCount: 0,
+      loseCount: 0
     };
   }
 
@@ -51,6 +53,8 @@ export default class App extends React.Component {
       target
     } = this.state;
     let result = [];
+    let winCount = 0;
+    let loseCount = 0;
     for (let i = 0; i < iteration; i++) {
       let doubleDownAlgorithm = new DoubleDown(
         base,
@@ -58,38 +62,42 @@ export default class App extends React.Component {
         startPurchaseAmount,
         target
       );
-      result.push(doubleDownAlgorithm.calculate());
+      let gameResult = doubleDownAlgorithm.calculate();
+      if (gameResult.win) {
+        winCount++;
+      } else {
+        loseCount++;
+      }
+      result.push(gameResult);
     }
     this.setState({
       hasResult: true,
-      result
+      result,
+      winCount,
+      loseCount
     });
   };
 
   Result = () => {
-    let displayResult = this.generateResultItem(this.state.result[0]);
     return (
       <div>
         <h1>結果</h1>
-        {displayResult}
+        <this.AbstractResult />
+        <SicBoTable result={this.state.result} />
       </div>
     );
   };
 
-  generateResultItem(item) {
-    console.log(item);
+  AbstractResult = () => {
+    let { winCount, loseCount } = this.state;
     return (
-      <div className="Result-item-container">
-        <p>{item.win ? "win" : "lose"} </p>
-        <p>Balance: ${item.currentBalance} </p>
-        <p>Game Play {item.gamePlay} </p>
-        <p>{item.gameWin} </p>
-        <p>{item.gameLost} </p>
-        <p>{item.threeTheSame} </p>
-        <p>{item.highestDouble} </p>
+      <div>
+        <p>贏/場: {winCount}</p>
+        <p>輸/場: {loseCount}</p>
+        <p>勝率: {(winCount / (winCount + loseCount)) * 100}%</p>
       </div>
     );
-  }
+  };
 
   setLanguage(language) {
     let labels = this.getLabels(language);
@@ -111,35 +119,43 @@ export default class App extends React.Component {
 
   TextFieldSection = () => {
     let labels = this.state.labels.inputTextFields;
+    let {
+      base,
+      purchaseLimit,
+      startPurchaseAmount,
+      target,
+      iteration
+    } = this.state;
     const textFieldsValues = [
       {
         startAdornment: "$",
         name: "base",
-        label: labels.base
+        label: labels.base,
+        defaultValue: base
       },
       {
         startAdornment: "$",
         name: "purchaseLimit",
         label: labels.purchaseLimit,
-        defaulValue: 0
+        defaultValue: purchaseLimit
       },
       {
         startAdornment: "$",
         name: "startPurchaseAmount",
         label: labels.startPurchaseAmount,
-        defaulValue: 0
+        defaultValue: startPurchaseAmount
       },
       {
         startAdornment: "$",
         name: "target",
         label: labels.target,
-        defaulValue: 0
+        defaultValue: target
       },
       {
         startAdornment: "",
         name: "iteration",
         label: labels.iteration,
-        defaulValue: 1
+        defaultValue: iteration
       }
     ];
     return textFieldsValues.map((item, index) => {
@@ -157,7 +173,7 @@ export default class App extends React.Component {
             }}
             name={item.name}
             onChange={event => this.onChangeTextField(event)}
-            placeholder={item.defaulValue}
+            placeholder={item.defaultValue}
           ></TextField>
         </div>
       );
