@@ -91,10 +91,10 @@ export default class App extends React.Component {
   AbstractResult = () => {
     let { winCount, loseCount } = this.state;
     return (
-      <div>
-        <p>贏/場: {winCount}</p>
-        <p>輸/場: {loseCount}</p>
-        <p>勝率: {(winCount / (winCount + loseCount)) * 100}%</p>
+      <div className={"Result-win-rate-container"}>
+        <p>{`贏/場: ${winCount} `}</p>
+        <p>{`輸/場: ${loseCount} `}</p>
+        <p>{`勝率: ${(winCount / (winCount + loseCount)) * 100}%`}</p>
       </div>
     );
   };

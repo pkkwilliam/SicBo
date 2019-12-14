@@ -28,3 +28,9 @@
   flex-direction: row;
   justify-content: center;
 }
+
+.Result-win-rate-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
