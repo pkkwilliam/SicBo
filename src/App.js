@@ -6,6 +6,9 @@ import "./App.css";
 import { DoubleDown } from "./doubleDown/doubleDownCalculate";
 import SicBoTable from "./table/table.js";
 
+const VERSION = "V1.0.0";
+const EMAIL = "pkkwilliam919@gmail.com";
+
 export default class App extends React.Component {
   constructor(props) {
     super();
@@ -38,8 +41,13 @@ export default class App extends React.Component {
 
   CalculateButton = () => {
     return (
-      <Button onClick={this.onPressCalculateButton}>
-        <p>{this.state.labels.calculateButton}</p>
+      <Button
+        color="primary"
+        onClick={this.onPressCalculateButton}
+        variant="contained"
+        style={{ margin: 15 }}
+      >
+        {this.state.labels.calculateButton}
       </Button>
     );
   };
